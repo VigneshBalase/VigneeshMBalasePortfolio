@@ -1,52 +1,54 @@
-require('dotenv').config();
+// Import required modules
+require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+// Initialize Express app
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+// CORS configuration
 app.use(cors({
-    origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow your frontend URL
+    origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Replace with your frontend URL
     methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
     credentials: true
 }));
 
-app.options('*', cors()); // Enable pre-flight across-the-board
-
+// Middleware for parsing JSON
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 3000;
+// Nodemailer transporter setup using SMTP for Gmail
+let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // true for port 465, false for port 587
+    auth: {
+        user: process.env.EMAIL_USER, // Gmail email
+        pass: process.env.EMAIL_PASS  // Gmail app password
+    }
+});
 
-// Endpoint to send email
+// POST endpoint to send email
 app.post('/send-email', async (req, res) => {
     const { userName, userEmail, userPhoneNumber, message } = req.body;
 
-    // Set up Nodemailer transporter
-    let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // use SSL
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-});
-
-    // Email to Admin
+    // Email options for Admin
     let adminMailOptions = {
         from: process.env.EMAIL_USER,
-        to: 'vigneshbalase07@gmail.com',
+        to: 'vigneshbalase07@gmail.com', // Admin email
         subject: `New message from ${userName}`,
-        text: `Hi Vignesh M Balase,\n\n${userName} wants to connect with you regarding the following message:\n\n"${message}"\n\nYou can reach them through their email: ${userEmail} or phone number: ${userPhoneNumber}.\n\nBest regards,\nYour Contact Form`,
+        text: `Hi Vignesh M Balase,\n\n${userName} has sent you a message:\n\n"${message}"\n\nContact details:\n- Email: ${userEmail}\n- Phone: ${userPhoneNumber}\n\nBest regards,\nYour Contact Form`
     };
 
-    // Confirmation email to User
+    // Email options for User confirmation
     let userMailOptions = {
         from: process.env.EMAIL_USER,
         to: userEmail,
-        subject: `Message successfully sent to Vignesh M Balase`,
-        text: `Hi ${userName},\n\nThank you for reaching out! Your message has been successfully sent to Vignesh M Balase.\n\nHere are the details of your message:\n- Email: ${userEmail}\n- Message: "${message}"\n\nVignesh will get back to you shortly.\n\nBest regards,\nVignesh M Balase`,
+        subject: `Message sent successfully to Vignesh M Balase`,
+        text: `Hi ${userName},\n\nThank you for your message. Here are the details you provided:\n- Email: ${userEmail}\n- Message: "${message}"\n\nVignesh will get back to you shortly.\n\nBest regards,\nVignesh M Balase`
     };
 
     try {
@@ -55,6 +57,7 @@ app.post('/send-email', async (req, res) => {
         // Send confirmation email to User
         await transporter.sendMail(userMailOptions);
 
+        // Respond to the client with success
         res.status(200).send('Emails sent successfully');
     } catch (error) {
         console.error('Error sending emails:', error);
@@ -62,10 +65,15 @@ app.post('/send-email', async (req, res) => {
     }
 });
 
+// Handle pre-flight CORS requests for /send-email
+app.options('/send-email', cors());
+
+// Basic GET endpoint
 app.get('/', (req, res) => {
     res.send('Welcome to Portfolio');
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
