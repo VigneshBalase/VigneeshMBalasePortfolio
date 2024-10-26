@@ -9,7 +9,7 @@ const cors = require('cors');
 
    const app = express();
    app.use(cors({
-       origin: 'https://vigneshbalase-fortfolio-4nbcaxxjq-vigneshbalases-projects.vercel.app/', // Allow your front-end URL
+       origin: 'vigneesh-m-balase-portfolio.vercel.app', // Allow your front-end URL
        methods: ['GET', 'POST'], // Specify allowed methods
        credentials: true // Allow credentials if needed
    }));
