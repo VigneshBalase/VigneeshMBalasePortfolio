@@ -6,10 +6,11 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
    app.use(cors({
-       origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow your front-end URL
-       methods: ['GET', 'POST'], // Specify allowed methods
-       credentials: true // Allow credentials if needed
-   }));
+    origin: 'https://vigneesh-m-balase-portfolio.vercel.app', 
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
+
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
