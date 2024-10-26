@@ -1,5 +1,3 @@
-// Import required modules
-require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
@@ -9,26 +7,26 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware for parsing JSON
+app.use(bodyParser.json());
+
 // CORS configuration
 app.use(cors({
   origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow only your frontend origin
-  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'], // Allow these methods
+  methods: ['GET', 'POST', 'OPTIONS'], // Allow these methods
   allowedHeaders: [
+    'Content-Type',
     'X-CSRF-Token',
     'X-Requested-With',
     'Accept',
     'Accept-Version',
     'Content-Length',
     'Content-MD5',
-    'Content-Type',
     'Date',
     'X-Api-Version'
   ],
   credentials: true // Allow cookies and authentication
 }));
-
-// Middleware for parsing JSON
-app.use(bodyParser.json());
 
 // Nodemailer transporter setup using SMTP for Gmail
 let transporter = nodemailer.createTransport({
@@ -75,8 +73,8 @@ app.post('/send-email', async (req, res) => {
     }
 });
 
-// Handle pre-flight CORS requests for /send-email
-app.options('/send-email', cors());
+// Handle pre-flight CORS requests for all routes
+app.options('*', cors());
 
 // Basic GET endpoint
 app.get('/', (req, res) => {
