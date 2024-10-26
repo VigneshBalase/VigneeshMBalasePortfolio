@@ -24,12 +24,14 @@ app.post('/send-email', async (req, res) => {
 
     // Set up Nodemailer transporter
     let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER, // Your admin email
-            pass: process.env.EMAIL_PASS,  // Your email password
-        },
-    });
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
 
     // Email to Admin
     let adminMailOptions = {
