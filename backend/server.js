@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-  origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow only your frontend origin
+  Access-Control-Allow-Origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow only your frontend origin
   methods: ['GET', 'POST', 'OPTIONS'], // Allow these methods
   allowedHeaders: [
     'Content-Type',
