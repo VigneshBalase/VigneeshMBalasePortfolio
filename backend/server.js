@@ -2,14 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+const path = require('path');
 const cors = require('cors');
-
-
-const cors = require('cors');
-
-   const app = express();
+const app = express();
    app.use(cors({
-       origin: 'vigneesh-m-balase-portfolio.vercel.app', // Allow your front-end URL
+       origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow your front-end URL
        methods: ['GET', 'POST'], // Specify allowed methods
        credentials: true // Allow credentials if needed
    }));
@@ -29,7 +26,6 @@ app.post('/send-email', async (req, res) => {
         pass: process.env.EMAIL_PASS,  // Your email password
       },
     });
-  
     // Email to Admin (Vignesh M Balase)
     let adminMailOptions = {
       from: process.env.EMAIL_USER,
@@ -59,6 +55,15 @@ app.post('/send-email', async (req, res) => {
     }
   });
   
+app.get('/', async (req, res) => {
+    try {
+        // Render your portfolio page or send a response
+        res.sendFile(path.join(__dirname, '../frontend/index.html')); // Adjust the path as necessary
+    } catch (error) {
+        console.error('Error loading portfolio:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
