@@ -11,10 +11,20 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 app.use(cors({
-    origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Replace with your frontend URL
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
-    credentials: true
+  origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow only your frontend origin
+  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'], // Allow these methods
+  allowedHeaders: [
+    'X-CSRF-Token',
+    'X-Requested-With',
+    'Accept',
+    'Accept-Version',
+    'Content-Length',
+    'Content-MD5',
+    'Content-Type',
+    'Date',
+    'X-Api-Version'
+  ],
+  credentials: true // Allow cookies and authentication
 }));
 
 // Middleware for parsing JSON
