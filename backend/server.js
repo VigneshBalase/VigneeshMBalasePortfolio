@@ -56,14 +56,8 @@ app.post('/send-email', async (req, res) => {
     }
   });
   
-app.get('/', async (req, res) => {
-    try {
-        // Render your portfolio page or send a response
-        res.sendFile(path.join(__dirname, '../frontend/index.html')); // Adjust the path as necessary
-    } catch (error) {
-        console.error('Error loading portfolio:', error);
-        res.status(500).send('Internal Server Error');
-    }
+app.get('/', (req, res) => {
+    res.send('Welcome to Portfolio');
 });
 
 app.listen(PORT, () => {
