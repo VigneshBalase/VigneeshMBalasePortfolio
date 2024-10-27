@@ -12,10 +12,12 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-    origin: '*', // Allows all origins; specify your frontend's URL for tighter security
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify the allowed methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+    origin: '*', // Adjust this to your frontend's URL for security
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+    credentials: true // Allow cookies to be sent
 }));
+
 
 // Handle pre-flight CORS requests for all routes
 app.options('*', cors());
