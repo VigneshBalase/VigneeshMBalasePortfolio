@@ -12,20 +12,7 @@ app.use(bodyParser.json());
 
 // CORS configuration
 app.use(cors({
-  Access-Control-Allow-Origin: 'https://vigneesh-m-balase-portfolio.vercel.app', // Allow only your frontend origin
-  methods: ['GET', 'POST', 'OPTIONS'], // Allow these methods
-  allowedHeaders: [
-    'Content-Type',
-    'X-CSRF-Token',
-    'X-Requested-With',
-    'Accept',
-    'Accept-Version',
-    'Content-Length',
-    'Content-MD5',
-    'Date',
-    'X-Api-Version'
-  ],
-  credentials: true // Allow cookies and authentication
+  origin: 'https://vigneesh-m-balase-portfolio.vercel.app'
 }));
 
 // Nodemailer transporter setup using SMTP for Gmail
